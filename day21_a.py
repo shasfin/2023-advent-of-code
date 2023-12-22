@@ -1,3 +1,8 @@
+def pprint(table):
+    for row in table:
+        print(" ".join("{:3d}".format(cell) for cell in row))
+    print('-------------------------------------------')
+
 def parse_data(file_path):
     with open(file_path, 'r') as file:
         data = [line.strip() for line in file]
@@ -9,29 +14,29 @@ def find_S(data):
         if j != -1:
             return (i, j)
 
+
 def bfs(start, max_steps, data):
-    count = 0
     n = len(data)
     m = len(data[0])
-    queue = [(start[0], start[1], 0)]
-    visited = [[0]*m for _ in range(n)]
-    while queue != []:
-        i, j, steps = queue.pop(0)
-        if steps % 5 == 0:
-            print(f"{i=}, {j=}, {steps=}")
-        if steps == max_steps:
-            count += 1
-        if steps > max_steps:
-            break
-        for ii in range(max(i - 1, 0), min(i + 1, n - 1) + 1):
-            for jj in range(max(j - 1, 0), min(j + 1, n - 1) + 1):
-                if data[ii][jj] == '.':
-                    if not visited[ii][jj] == steps + 1:
-                    #     count += 1
-                        visited[ii][jj] = steps + 1
-                        queue.append((ii, jj, steps + 1))
-    return count
 
+    neighbors = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+
+    count = 0
+    visited = [[-1 if data[i][j] == '#' else 0 for j in range(m)] for i in range(n)]
+    queue = [start]
+    while queue != []:
+        i, j = queue.pop(0)
+        if visited[i][j] == max_steps:
+            break
+        for neighbor in neighbors:
+            ii, jj = i + neighbor[0], j + neighbor[1]
+            if 0 <= ii < n and 0 <= jj < m:
+                if -1 < visited[ii][jj] < visited[i][j] + 1:
+                    if visited[i][j] + 1 == max_steps:
+                        count += 1
+                    queue.append((ii, jj))
+                    visited[ii][jj] = visited[i][j] + 1
+    return count
 
 
 file_path = 'data/day21.txt'
