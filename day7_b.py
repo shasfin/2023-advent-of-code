@@ -27,7 +27,6 @@ def get_kind(cards):
         else:
             js += 1
     max_count = max(counts.values()) if len(counts.values()) > 0 else 0
-    print(f"For {cards=} there are {js=} and {max_count=}")
     if max_count + js == 5:
         return 6 # Five of a kind
     if max_count + js == 4:
