@@ -21,8 +21,8 @@ def bfs(start, max_steps, data):
 
     neighbors = [(-1, 0), (1, 0), (0, -1), (0, 1)]
 
-    count = 0
-    visited = [[-1 if data[i][j] == '#' else 0 for j in range(m)] for i in range(n)]
+    visited = [[-2 if data[i][j] == '#' else -1 for j in range(m)] for i in range(n)]
+    visited[start[0]][start[1]] = 0
     # pprint(visited)
     queue = [start]
     while queue != []:
@@ -32,15 +32,18 @@ def bfs(start, max_steps, data):
         for neighbor in neighbors:
             ii, jj = i + neighbor[0], j + neighbor[1]
             if 0 <= ii < n and 0 <= jj < m:
-                if -1 < visited[ii][jj] < visited[i][j] + 1:
-                    if visited[i][j] + 1 == max_steps:
-                        count += 1
+                if visited[ii][jj] == -1:
                     queue.append((ii, jj))
                     visited[ii][jj] = visited[i][j] + 1
-    return count
+    pprint(visited)
+    return 0
 
 
 file_path = 'data/day21.txt'
 data = parse_data(file_path)
 S_coordinates = find_S(data)
-print(bfs(S_coordinates, 64, data))
+# print(bfs(S_coordinates, 64, data))
+sum = 0
+for i in range(26501365):
+    sum += i
+print(sum)
